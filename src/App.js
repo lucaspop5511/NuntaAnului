@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ChevronUp, ChevronDown, Minus, RefreshCw, AlertCircle } from 'lucide-react';
+import { Expand } from "@theme-toggles/react"
+import "@theme-toggles/react/css/Expand.css"
 import './App.css';
 import './colors.css';
 
@@ -220,7 +222,18 @@ const GuestListApp = () => {
         <div className="table-container">
           <div className="table-header">
             <div>
-              <h1 className="table-title">Nunta Anului</h1>
+              <h1 className="table-title">
+                Nunta Anului
+                <div className="theme-toggle-container">
+                  <Expand 
+                    duration={750} 
+                    toggled={darkMode}
+                    toggle={toggleDarkMode}
+                    className='dark-mode-toggle'
+                  />
+                  <span className="tooltip">Toggle Theme</span>
+                </div>
+              </h1>
               <p className="table-subtitle">Sortare invitați</p>
             </div>
             <div className="header-controls">
@@ -256,12 +269,6 @@ const GuestListApp = () => {
                 </button>
               ))}
             </div>
-            <button
-              onClick={toggleDarkMode}
-              className={`dark-mode-toggle ${darkMode ? 'dark' : ''}`}
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
           </div>
           
           {error && (
