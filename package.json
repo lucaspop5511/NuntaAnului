@@ -43,7 +43,8 @@
   },
   "overrides": {
     "@theme-toggles/react": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
   }
 }
