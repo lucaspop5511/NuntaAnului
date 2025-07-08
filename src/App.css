@@ -135,6 +135,7 @@ body {
 }
 
 .table-header-cell {
+  max-width: 100px;
   padding: 8px 12px;
   text-align: left;
   font-weight: bold;
@@ -163,15 +164,86 @@ body {
   align-items: center;
   gap: 8px;
   width: 100%;
+  transition: font-size 0.1s ease-in-out, color 0.2s ease-in-out;
 }
 
 .sort-button.active {
-  background-color: var(--accent-active);
+  background-color: var(--bg-fourth);
+  color: #1976d2;
+  font-size: 15px;
 }
 
 .sort-icon {
-  width: 16px;
-  height: 16px;
+  transform-origin: center;
+  margin-left: 6px;
+  width: 19px;
+  height: 19px;
+}
+
+.sort-button .sort-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.2s ease;
+}
+
+/* Smooth rotation and scaling effects */
+.sort-button:not(.active) .sort-icon {
+  transform: scale(0.9) rotate(0deg);
+  opacity: 0.7;
+}
+
+.sort-button.active .sort-icon {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* Icon state transitions */
+.sort-icon.chevron-up {
+  animation: morphToUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.sort-icon.chevron-down {
+  animation: morphToDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.sort-icon.minus {
+  animation: morphToMinus 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Keyframe animations for smooth morphing */
+@keyframes morphToUp {
+  0% {
+    transform: rotate(0deg) scale(0.9);
+  }
+  50% {
+    transform: rotate(-10deg) scale(0.95);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes morphToDown {
+  0% {
+    transform: rotate(0deg) scale(0.9);
+  }
+  50% {
+    transform: rotate(10deg) scale(0.95);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes morphToMinus {
+  0% {
+    transform: rotate(180deg) scale(1);
+  }
+  50% {
+    transform: rotate(90deg) scale(0.95);
+  }
+  100% {
+    transform: rotate(0deg) scale(0.9);
+  }
 }
 
 .table-row {
@@ -337,6 +409,10 @@ body {
 
 @media (max-width: 750px) {
   .last-updated {
+    display: none;
+  }
+
+  .sort-icon {
     display: none;
   }
 }

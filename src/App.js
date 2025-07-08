@@ -161,18 +161,63 @@ const GuestListApp = () => {
     }
   };
 
-  const handleSort = (column) => {
-    setSortStates(prev => ({
-      ...prev,
-      [column]: (prev[column] + 1) % 3
-    }));
-  };
-
   const getSortIcon = (column) => {
     const state = sortStates[column];
-    if (state === 1) return <ChevronUp className="sort-icon" />;
-    if (state === 2) return <ChevronDown className="sort-icon" />;
-    return <Minus className="sort-icon" />;
+    
+    if (state === 1) {
+      return (
+        <ChevronUp 
+          className="sort-icon chevron-up" 
+          style={{
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transformOrigin: 'center'
+          }}
+        />
+      );
+    }
+    
+    if (state === 2) {
+      return (
+        <ChevronDown 
+          className="sort-icon chevron-down"
+          style={{
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transformOrigin: 'center'
+          }}
+        />
+      );
+    }
+    
+    return (
+      <Minus 
+        className="sort-icon minus"
+        style={{
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          transformOrigin: 'center'
+        }}
+      />
+    );
+  };
+
+  // Enhanced handleSort with smoother state transitions
+  const handleSort = (column) => {
+    setSortStates(prev => {
+      const newState = (prev[column] + 1) % 3;
+      
+      // Add a brief delay for visual feedback
+      const button = document.querySelector(`[data-sort="${column}"]`);
+      if (button) {
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          button.style.transform = '';
+        }, 100);
+      }
+      
+      return {
+        ...prev,
+        [column]: newState
+      };
+    });
   };
 
   const sortedData = useMemo(() => {
