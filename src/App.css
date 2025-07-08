@@ -1,10 +1,10 @@
 body {
-  background-color: var(--bg-primary);
+  background-color: rgb(51, 51, 51);
 }
 
 .app-container {
   min-height: 100vh;
-  background-color: var(--bg-primary);
+  background-color: rgb(51, 51, 51);
   padding: 20px;
 }
 
@@ -135,7 +135,7 @@ body {
 }
 
 .table-header-cell {
-  max-width: 80px;
+  min-width: 100px;
   padding: 8px 12px;
   text-align: left;
   font-weight: bold;
@@ -145,7 +145,11 @@ body {
 }
 
 .table-header-cell:nth-child(1) {
-  width: 15px;
+  min-width: 10px;
+}
+
+.table-header-cell:nth-child(4) {
+  max-width: 0px;
 }
 
 .table-header-cell.last {
@@ -280,36 +284,31 @@ body {
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 4px 8px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 22px;
 }
 
 .status-badge.invited {
-  background-color: var(--success-bg);
-  color: var(--success);
+  color: var(--success-bg);
 }
 
 .status-badge.not-invited {
-  background-color: var(--danger-bg);
-  color: var(--danger);
+  color: var(--danger-bg);
 }
 
 .status-badge.confirmed {
-  background-color: var(--success-bg);
-  color: var(--success);
+  color: var(--success-bg);
 }
 
 .status-badge.pending {
-  background-color: var(--warning-bg);
-  color: var(--warning);
+  color: var(--warning-bg);
 }
 
 .status-badge.declined {
-  background-color: var(--danger-bg);
-  color: var(--danger);
+  color: var(--danger-bg);
 }
 
 /* Spreadsheet Filter */
@@ -411,6 +410,119 @@ body {
   visibility: visible;
   opacity: 1;
 }
+/* Stats Dashboard Styles */
+.stats-dashboard {
+  padding: 30px 20px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stats-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 25px 0;
+  letter-spacing: 0.5px;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  max-width: 900px;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 15px 5px;
+  flex: 1;
+  min-width: 0; /* Allows items to shrink below their content size */
+}
+
+.stat-number {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.stat-number.confirmed-color {
+  color: var(--success-bg);
+}
+
+.stat-label.confirmed-color {
+  color: var(--success-bg);
+}
+
+.stat-number.declined-color {
+  color: var(--danger-bg);
+}
+
+.stat-label.declined-color {
+  color: var(--danger-bg);
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap; /* Prevents label text from wrapping */
+}
+
+/* Responsive adjustments - keeping single line but scaling down */
+@media (max-width: 768px) {
+  .stats-grid {
+    gap: 8px;
+  }
+  
+  .stat-item {
+    padding: 10px 3px;
+  }
+  
+  .stat-number {
+    font-size: 36px;
+  }
+  
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-dashboard {
+    padding: 20px 10px;
+  }
+  
+  .stats-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .stats-grid {
+    gap: 5px;
+  }
+  
+  .stat-item {
+    padding: 8px 2px;
+  }
+  
+  .stat-number {
+    font-size: 28px;
+  }
+  
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 0px;
+  }
+}
 
 @media (max-width: 750px) {
   .last-updated {
@@ -420,4 +532,8 @@ body {
   .sort-icon {
     display: none;
   }
+
+  .app-container {
+    padding: 0px;
+}
 }

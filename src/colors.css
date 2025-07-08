@@ -20,13 +20,11 @@
   
   /* Status Colors */
   --success: #2e7d32;
-  --success-bg: #e8f5e8;
+  --success-bg: #70b570;
   --warning: #f57c00;
-  --warning-bg: #fff3e0;
+  --warning-bg: #f29c46;
   --danger: #d32f2f;
-  --danger-bg: #ffeaea;
-  --pending: #8b5cf6;
-  --pending-bg: #f3e8ff;
+  --danger-bg: #db5b5b;
   
   /* Sheet Colors */
   --sheet-muresan: #1976d2;
@@ -66,8 +64,6 @@
   --warning-bg: #b68331;
   --danger: #eab8b8;
   --danger-bg: #cc4949;
-  --pending: #8b5cf6;
-  --pending-bg: #f3e8ff;
   
   /* Sheet Colors (darker versions) */
   --sheet-muresan: #a4cbf2;

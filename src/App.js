@@ -53,8 +53,8 @@ const GuestListApp = () => {
   const [sortStates, setSortStates] = useState({
     nume: 0,
     prenume: 0,
-    invitati: 0,
-    confirmare: 0
+    confirmare: 0,
+    provenienta: 0
   });
 
   // Initialize with sample data
@@ -231,10 +231,7 @@ const GuestListApp = () => {
         let bVal = b[column];
         
         // Special handling for different column types
-        if (column === 'invitati') {
-          aVal = aVal ? 1 : 0;
-          bVal = bVal ? 1 : 0;
-        } else if (column === 'confirmare') {
+        if (column === 'confirmare') {
           // Handle empty values as "In asteptare" since that's how they're displayed
           const normalizeValue = (val) => val || 'In asteptare';
           aVal = normalizeValue(aVal);
@@ -325,10 +322,28 @@ const GuestListApp = () => {
             </div>
           )}
           
-          <div className="table-stats">
-            <div className="stats-row">
-              <span>Total invitați ({activeFilter}): {totalGuests}</span>
-              <span>Confirmați: {confirmedGuests}</span>
+          {/* Stats Dashboard */}
+          <div className="stats-dashboard">
+            <h2 className="stats-title">
+              {activeFilter === 'All' ? 'Total' : activeFilter}
+            </h2>
+            <div className="stats-grid">
+              <div className="stat-item">
+                <div className="stat-number">{totalGuests}</div>
+                <div className="stat-label">INVITAȚI</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number confirmed-color">{confirmedGuests}</div>
+                <div className="stat-label confirmed-color">CONFIRMAȚI</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number declined-color">{currentData.filter(p => p.confirmare === 'Nu participa').length}</div>
+                <div className="stat-label declined-color">NU VIN</div>
+              </div>
+              <div className="stat-item">
+                <div className="stat-number">{daysLeft}</div>
+                <div className="stat-label">DAYS LEFT</div>
+              </div>
             </div>
           </div>
           
@@ -359,20 +374,20 @@ const GuestListApp = () => {
                   </th>
                   <th className="table-header-cell sortable">
                     <button
-                      onClick={() => handleSort('invitati')}
-                      className={`sort-button ${sortStates.invitati > 0 ? 'active' : ''}`}
-                    >
-                      Invitați
-                      {getSortIcon('invitati')}
-                    </button>
-                  </th>
-                  <th className="table-header-cell sortable">
-                    <button
                       onClick={() => handleSort('confirmare')}
                       className={`sort-button ${sortStates.confirmare > 0 ? 'active' : ''}`}
                     >
                       Confirmare
                       {getSortIcon('confirmare')}
+                    </button>
+                  </th>
+                  <th className="table-header-cell sortable">
+                    <button
+                      onClick={() => handleSort('provenienta')}
+                      className={`sort-button ${sortStates.provenienta > 0 ? 'active' : ''}`}
+                    >
+                      Provenienta
+                      {getSortIcon('provenienta')}
                     </button>
                   </th>
                   <th className="table-header-cell last">
@@ -387,19 +402,18 @@ const GuestListApp = () => {
                     <td className="table-cell name-cell">{person.nume}</td>
                     <td className="table-cell name-cell">{person.prenume}</td>
                     <td className="table-cell">
-                      <span className={`status-badge ${person.invitati ? 'invited' : 'not-invited'}`}>
-                        {person.invitati ? 'Da' : 'Nu'}
-                      </span>
-                    </td>
-                    <td className="table-cell">
                       <span className={`status-badge ${
                         person.confirmare === 'Confirmat' ? 'confirmed' :
                         person.confirmare === 'In asteptare' ? 'pending' :
                         person.confirmare === 'Nu participa' ? 'declined' : 'pending'
                       }`}>
-                        {person.confirmare || 'In asteptare'}
+                        {person.confirmare === 'Confirmat' ? <i className="fa-solid fa-circle-check"></i> :
+                         person.confirmare === 'In asteptare' ? <i className="fa-solid fa-clock"></i> :
+                         person.confirmare === 'Nu participa' ? <i className="fa-solid fa-circle-xmark"></i> : 
+                         <i className="fa-solid fa-clock"></i>}
                       </span>
                     </td>
+                    <td className="table-cell">{person.provenienta}</td>
                     <td className="table-cell">
                       <span className={`sheet-badge sheet-${person.sheet.toLowerCase()}`}>
                         {person.sheet}
@@ -411,7 +425,7 @@ const GuestListApp = () => {
             </table>
             
             <footer>
-              <span>{daysLeft} zile până la nuntă</span>
+              {/* Footer content removed as days left is now in stats dashboard */}
             </footer>
           </div>
         </div>
