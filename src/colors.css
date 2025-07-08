@@ -35,6 +35,8 @@
   --sheet-pop-bg: #ebebaf;
   --sheet-comun: #7b1fa2;
   --sheet-comun-bg: #f3e5f5;
+  --sheet-copii: #ff6b35;
+  --sheet-copii-bg: #ffe4dc; 
 }
 
 /* Dark Theme Colors */
@@ -74,4 +76,6 @@
   --sheet-pop-bg: #878733;
   --sheet-comun: #dfc1ec;
   --sheet-comun-bg: #6a3272;
+  --sheet-copii: #ffb399;
+  --sheet-copii-bg: #b8421a;
 }

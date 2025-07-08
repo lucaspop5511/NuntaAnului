@@ -13,7 +13,8 @@ const GuestListApp = () => {
     sheets: [
       { name: 'Muresan', range: 'Muresan!A:H' },
       { name: 'Pop', range: 'Pop!A:H' },
-      { name: 'Comun', range: 'Comun!A:H' }
+      { name: 'Comun', range: 'Comun!A:H' },
+      { name: 'Copii', range: 'Copii!A:H' }  // Added Copii sheet
     ]
   };
 
@@ -27,28 +28,26 @@ const GuestListApp = () => {
   const [daysLeft, setDaysLeft] = useState(0);
 
   useEffect(() => {
-  function updateCountdown() {
-    const targetDate = new Date('August 10, 2025').getTime();
-    const now = new Date().getTime();
-    const days = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
-    
-    setDaysLeft(days > 0 ? days : 0);
-  }
+    function updateCountdown() {
+      const targetDate = new Date('August 10, 2025').getTime();
+      const now = new Date().getTime();
+      const days = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+      
+      setDaysLeft(days > 0 ? days : 0);
+    }
 
-  updateCountdown();
-  const interval = setInterval(updateCountdown, 60000);
-  
-  return () => clearInterval(interval);
-}, []);
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 60000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const toggleDarkMode = () => {
-  setDarkMode(prev => !prev);
-};
+    setDarkMode(prev => !prev);
+  };
 
   // Sample data for each sheet (fallback when no Google Sheets connection)
-  const sampleData = [
-    
-  ];
+  const sampleData = [];
 
   // Sorting states: 0 = none, 1 = ascending, 2 = descending
   const [sortStates, setSortStates] = useState({
@@ -236,6 +235,11 @@ const GuestListApp = () => {
           aVal = aVal ? 1 : 0;
           bVal = bVal ? 1 : 0;
         } else if (column === 'confirmare') {
+          // Handle empty values as "In asteptare" since that's how they're displayed
+          const normalizeValue = (val) => val || 'In asteptare';
+          aVal = normalizeValue(aVal);
+          bVal = normalizeValue(bVal);
+          
           const order = { 'Confirmat': 1, 'In asteptare': 2, 'Nu participa': 3 };
           aVal = order[aVal] || 999;
           bVal = order[bVal] || 999;
@@ -282,7 +286,6 @@ const GuestListApp = () => {
               <p className="table-subtitle">Sortare invitați</p>
             </div>
             <div className="header-controls">
-
               {lastUpdated && (
                 <span className="last-updated">
                   Ultima actualizare: {lastUpdated.toLocaleTimeString()}
@@ -297,14 +300,13 @@ const GuestListApp = () => {
                 <RefreshCw className={`refresh-icon ${loading ? 'spinning' : ''}`} />
                 {loading ? 'Se încarcă...' : 'Actualizează Date'}
               </button>
-
             </div>
           </div>
 
-          {/* Filter Buttons */}
+          {/* Filter Buttons - UPDATED TO INCLUDE COPII */}
           <div className="filter-buttons">
             <div className="filter-buttons-left">
-              {['All', 'Muresan', 'Pop', 'Comun'].map(filter => (
+              {['All', 'Muresan', 'Pop', 'Comun', 'Copii'].map(filter => (
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
@@ -335,7 +337,7 @@ const GuestListApp = () => {
               <thead>
                 <tr className="table-header-row">
                   <th className="table-header-cell">
-                    Nr
+                    .
                   </th>
                   <th className="table-header-cell sortable">
                     <button
@@ -373,9 +375,6 @@ const GuestListApp = () => {
                       {getSortIcon('confirmare')}
                     </button>
                   </th>
-                  <th className="table-header-cell">
-                    Proveniența
-                  </th>
                   <th className="table-header-cell last">
                     Sheet
                   </th>
@@ -383,16 +382,10 @@ const GuestListApp = () => {
               </thead>
               <tbody>
                 {sortedData.map((person, index) => (
-                  <tr key={person.id} className={index % 2 === 0 ? 'table-row' : 'table-row alternate'}>
-                    <td className="table-cell number-cell">
-                      {index + 1}
-                    </td>
-                    <td className="table-cell name-cell">
-                      {person.nume}
-                    </td>
-                    <td className="table-cell">
-                      {person.prenume}
-                    </td>
+                  <tr key={person.id} className={`table-row ${index % 2 === 1 ? 'alternate' : ''}`}>
+                    <td className="table-cell number-cell">{index + 1}</td>
+                    <td className="table-cell name-cell">{person.nume}</td>
+                    <td className="table-cell name-cell">{person.prenume}</td>
                     <td className="table-cell">
                       <span className={`status-badge ${person.invitati ? 'invited' : 'not-invited'}`}>
                         {person.invitati ? 'Da' : 'Nu'}
@@ -401,13 +394,11 @@ const GuestListApp = () => {
                     <td className="table-cell">
                       <span className={`status-badge ${
                         person.confirmare === 'Confirmat' ? 'confirmed' :
-                        person.confirmare === 'In asteptare' ? 'pending' : 'declined'
+                        person.confirmare === 'In asteptare' ? 'pending' :
+                        person.confirmare === 'Nu participa' ? 'declined' : 'pending'
                       }`}>
-                        {person.confirmare}
+                        {person.confirmare || 'In asteptare'}
                       </span>
-                    </td>
-                    <td className="table-cell">
-                      {person.provenienta}
                     </td>
                     <td className="table-cell">
                       <span className={`sheet-badge sheet-${person.sheet.toLowerCase()}`}>
@@ -418,9 +409,9 @@ const GuestListApp = () => {
                 ))}
               </tbody>
             </table>
+            
             <footer>
-              <div className="countdown-display">{daysLeft}</div>
-              <div className="countdown-label">days left</div>
+              <span>{daysLeft} zile până la nuntă</span>
             </footer>
           </div>
         </div>

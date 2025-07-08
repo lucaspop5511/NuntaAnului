@@ -135,13 +135,17 @@ body {
 }
 
 .table-header-cell {
-  max-width: 100px;
+  max-width: 80px;
   padding: 8px 12px;
   text-align: left;
   font-weight: bold;
   background-color: var(--bg-fourth);
   color: var(--text-tertiary);
   border-right: 1px solid var(--border-color);
+}
+
+.table-header-cell:nth-child(1) {
+  width: 15px;
 }
 
 .table-header-cell.last {
@@ -347,6 +351,7 @@ body {
 .sheet-muresan { background: var(--sheet-muresan-bg); color: var(--sheet-muresan); }
 .sheet-pop { background: var(--sheet-pop-bg); color: var(--sheet-pop); }
 .sheet-comun { background: var(--sheet-comun-bg); color: var(--sheet-comun); }
+.sheet-copii { background: var(--sheet-copii-bg); color: var(--sheet-copii); }
 
 .table-wrapper footer {
   display: flex;
